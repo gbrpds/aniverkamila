@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { EVENT } from "../lib/config";
 import { findProduct, marketplaceLinks } from "../lib/products";
 
@@ -39,6 +39,7 @@ export default function Home() {
 
   return (
     <main className="page">
+      <MusicPlayer />
       <Hero />
       <EventInfo />
       <ComemorarSection />
@@ -46,6 +47,53 @@ export default function Home() {
       <RsvpSection />
       <Footer />
     </main>
+  );
+}
+
+/* ---------------- Player de música flutuante ---------------- */
+function MusicPlayer() {
+  const audioRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  const [nudge, setNudge] = useState(true); // pulsa pra convidar o clique
+
+  async function toggle() {
+    const a = audioRef.current;
+    if (!a) return;
+    setNudge(false);
+    try {
+      if (playing) {
+        a.pause();
+        setPlaying(false);
+      } else {
+        a.volume = 0.6;
+        await a.play();
+        setPlaying(true);
+      }
+    } catch {
+      // navegador bloqueou (ou arquivo ausente) — mantém pausado
+      setPlaying(false);
+    }
+  }
+
+  return (
+    <>
+      {/* Coloque o arquivo em public/music/tema.mp3 (veja o README de lá) */}
+      <audio ref={audioRef} src="/music/tema.mp3" loop preload="none" />
+      <button
+        className={`music-btn${playing ? " playing" : ""}${nudge ? " nudge" : ""}`}
+        onClick={toggle}
+        aria-label={playing ? "Pausar música" : "Tocar música"}
+        title={playing ? "Pausar música" : "Tocar música"}
+      >
+        {playing ? (
+          <span className="eq" aria-hidden="true">
+            <i /><i /><i />
+          </span>
+        ) : (
+          <span aria-hidden="true">🎵</span>
+        )}
+      </button>
+    </>
   );
 }
 

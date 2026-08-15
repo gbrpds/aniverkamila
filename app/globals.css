@@ -177,8 +177,7 @@ h3 {
   display: block;
   width: 72%;
   margin: 0 auto;
-  filter: grayscale(1) contrast(1.06) brightness(1.02)
-    drop-shadow(0 6px 12px rgba(120, 40, 90, 0.22));
+  filter: drop-shadow(0 6px 12px rgba(120, 40, 90, 0.22));
 }
 
 /* Número "25" estilo balão metalizado, sobreposto à foto */
@@ -797,6 +796,81 @@ h3 {
 @keyframes sk {
   to {
     background-position: -200% 0;
+  }
+}
+
+/* ---------- Player de música flutuante ---------- */
+.music-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--pink-hot);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px var(--shadow);
+  transition: transform 0.15s, filter 0.15s;
+}
+.music-btn:hover {
+  filter: brightness(1.08);
+}
+.music-btn:active {
+  transform: scale(0.94);
+}
+.music-btn.nudge {
+  animation: musicNudge 1.6s ease-in-out infinite;
+}
+@keyframes musicNudge {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 20px var(--shadow);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 8px 26px rgba(139, 47, 214, 0.5);
+  }
+}
+/* Equalizer animado quando tocando */
+.music-btn .eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+}
+.music-btn .eq i {
+  width: 4px;
+  background: #fff;
+  border-radius: 2px;
+  animation: eqbar 0.9s ease-in-out infinite;
+}
+.music-btn .eq i:nth-child(1) {
+  height: 8px;
+  animation-delay: 0s;
+}
+.music-btn .eq i:nth-child(2) {
+  height: 18px;
+  animation-delay: 0.2s;
+}
+.music-btn .eq i:nth-child(3) {
+  height: 12px;
+  animation-delay: 0.4s;
+}
+@keyframes eqbar {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
   }
 }
 
