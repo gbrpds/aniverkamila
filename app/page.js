@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { EVENT } from "../lib/config";
+import { findProduct, marketplaceLinks } from "../lib/products";
 
 /* Sticker PNG posicionado de forma absoluta como decoração */
 function Sticker({ src, alt = "", w, rot = 0, float = false, slow = false, style = {} }) {
@@ -41,8 +42,8 @@ export default function Home() {
       <Hero />
       <EventInfo />
       <ComemorarSection />
-      <GiftSection gifts={gifts} configured={configured} />
-      <RsvpSection gifts={gifts} configured={configured} onReload={loadGifts} />
+      <GiftSection gifts={gifts} configured={configured} onReload={loadGifts} />
+      <RsvpSection />
       <Footer />
     </main>
   );
@@ -124,12 +125,7 @@ function EventInfo() {
           <div style={{ opacity: 0.85 }}>{EVENT.endereco}</div>
           {EVENT.mapsUrl ? (
             <div style={{ marginTop: 12 }}>
-              <a
-                href={EVENT.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
+              <a href={EVENT.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
                 🗺️ Ver no mapa
               </a>
             </div>
@@ -151,7 +147,6 @@ function ComemorarSection() {
       <h2 className="section-title">Vem comemorar comigo!</h2>
       <div className="ribbon">{EVENT.observacoes}</div>
 
-      {/* Nokia com o recado do cardápio (imagem do Canva) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="nokia-feature" src="/images/nokia.png" alt={EVENT.cardapio} />
       <p className="section-sub" style={{ marginTop: 14, marginBottom: 0 }}>
@@ -161,33 +156,48 @@ function ComemorarSection() {
   );
 }
 
-/* ---------------- SLIDE 4: Presentes ---------------- */
-function GiftSection({ gifts, configured }) {
+/* ---------------- SLIDE 4: Presentes (cards de produto) ---------------- */
+function GiftSection({ gifts, configured, onReload }) {
+  const [modal, setModal] = useState(null); // { gift }
+  const total = gifts ? gifts.length : 0;
+  const taken = gifts ? gifts.filter((g) => g.claimed).length : 0;
+
   return (
     <section className="card" id="presentes">
       <Sticker src="sparkles.png" w={58} rot={12} float style={{ top: 12, right: 10 }} />
-      <h2 className="section-title">Itens para presente</h2>
+      <h2 className="section-title">Lista de presentes</h2>
       <p className="section-sub">
-        Sugestões pro chá de panela — escolha 1 na hora de confirmar 💕
+        Clique em um site pra comprar e marque o que você vai dar — assim ninguém
+        repete 💕
       </p>
 
       {!configured && (
         <div className="alert warn" style={{ marginBottom: 16 }}>
-          ⚙️ Lista ainda não conectada ao banco de dados. Os itens abaixo são
-          apenas as sugestões do convite.
+          ⚙️ A reserva ainda não está ligada (falta configurar o Supabase). Os
+          links de compra já funcionam normalmente. 🛍️
         </div>
       )}
 
-      <div className="gift-legend">
-        <span>
-          <i className="dot free" /> Disponível
-        </span>
-        <span>
-          <i className="dot taken" /> Já escolhido
-        </span>
-      </div>
+      {gifts && configured && (
+        <p className="gift-count">
+          🎁 {taken} de {total} presentes já reservados
+        </p>
+      )}
 
-      <GiftList gifts={gifts} />
+      <div className="prod-grid">
+        {gifts === null
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="prod-card skeleton-card" />
+            ))
+          : gifts.map((g) => (
+              <ProductCard
+                key={g.id}
+                gift={g}
+                configured={configured}
+                onReserve={() => setModal({ gift: g })}
+              />
+            ))}
+      </div>
 
       <div className="pix-box">
         <Sticker src="baby.png" w={64} rot={-10} style={{ top: -22, left: 10 }} />
@@ -198,30 +208,167 @@ function GiftSection({ gifts, configured }) {
         <div className="pix-key">{EVENT.chavePix}</div>
         <CopyPix />
       </div>
+
+      {modal && (
+        <ClaimModal
+          gift={modal.gift}
+          onClose={() => setModal(null)}
+          onDone={() => {
+            setModal(null);
+            onReload();
+          }}
+          onReload={onReload}
+        />
+      )}
     </section>
   );
 }
 
-function GiftList({ gifts }) {
-  if (gifts === null) {
+function ProductCard({ gift, configured, onReserve }) {
+  const p = findProduct(gift.name) || {
+    name: gift.name,
+    slug: "",
+    emoji: "🎁",
+    query: gift.name,
+  };
+  const links = marketplaceLinks(p);
+
+  return (
+    <div className={`prod-card${gift.claimed ? " reserved" : ""}`}>
+      <ProductImage product={p} />
+      <div className="prod-body">
+        <div className="prod-name">{gift.name}</div>
+
+        <div className="prod-buy">
+          <span className="prod-buy-label">Comprar em:</span>
+          <div className="prod-links">
+            {links.map((l) => (
+              <a
+                key={l.key}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mkt mkt-${l.key}`}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {gift.claimed ? (
+          <div className="prod-reserved">✅ Já reservado 💝</div>
+        ) : (
+          <button
+            className="btn btn-primary btn-block prod-pick"
+            onClick={onReserve}
+            disabled={!configured}
+            title={configured ? "" : "Reserva indisponível até configurar o banco"}
+          >
+            🎁 Vou dar esse!
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProductImage({ product }) {
+  const [err, setErr] = useState(false);
+  const src = product.image || (product.slug ? `/images/produtos/${product.slug}.jpg` : null);
+  if (err || !src) {
     return (
-      <ul className="gift-list">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <li key={i} className="skeleton" />
-        ))}
-      </ul>
+      <div className="prod-img prod-img-emoji" aria-hidden="true">
+        <span>{product.emoji}</span>
+      </div>
     );
   }
   return (
-    <ul className="gift-list">
-      {gifts.map((g) => (
-        <li key={g.id} className={`gift-row${g.claimed ? " taken" : ""}`}>
-          <span className="heart">{g.claimed ? "🩶" : "💗"}</span>
-          <span className="name">{g.name}</span>
-          <span className="badge">{g.claimed ? "Reservado" : "Livre"}</span>
-        </li>
-      ))}
-    </ul>
+    <div className="prod-img">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={product.name} onError={() => setErr(true)} loading="lazy" />
+    </div>
+  );
+}
+
+function ClaimModal({ gift, onClose, onDone, onReload }) {
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState({ state: "idle" });
+
+  async function confirm() {
+    if (!name.trim()) {
+      setStatus({ state: "error", msg: "Digite seu nome. 💗" });
+      return;
+    }
+    setStatus({ state: "loading" });
+    try {
+      const res = await fetch("/api/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ giftId: gift.id, name: name.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.error === "GIFT_TAKEN") {
+          setStatus({ state: "error", msg: data.message });
+          onReload();
+          return;
+        }
+        setStatus({ state: "error", msg: data.error || "Não foi possível reservar." });
+        return;
+      }
+      setStatus({ state: "ok" });
+      setTimeout(onDone, 1100);
+    } catch {
+      setStatus({ state: "error", msg: "Erro de conexão. Tente novamente." });
+    }
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        {status.state === "ok" ? (
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 48 }}>💝</div>
+            <h3 className="modal-title">Presente reservado!</h3>
+            <p>
+              Obrigada! Você vai dar <strong>{gift.name}</strong> 🎁
+            </p>
+          </div>
+        ) : (
+          <>
+            <button className="modal-x" onClick={onClose} aria-label="Fechar">
+              ✕
+            </button>
+            <h3 className="modal-title">Reservar presente</h3>
+            <p className="modal-gift">🎁 {gift.name}</p>
+            <div className="field">
+              <label>Seu nome</label>
+              <input
+                type="text"
+                value={name}
+                autoFocus
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Pra Kamila saber quem vai dar"
+                maxLength={80}
+                onKeyDown={(e) => e.key === "Enter" && confirm()}
+              />
+            </div>
+            {status.state === "error" && <div className="alert err">{status.msg}</div>}
+            <button
+              className="btn btn-primary btn-block"
+              onClick={confirm}
+              disabled={status.state === "loading"}
+            >
+              {status.state === "loading" ? "Reservando..." : "Confirmar reserva 💗"}
+            </button>
+            <p className="modal-note">
+              Não esqueça de comprar o presente pelos botões do card. 💕
+            </p>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -246,33 +393,22 @@ function CopyPix() {
 }
 
 /* ---------------- SLIDE 5: Confirmar presença ---------------- */
-function RsvpSection({ gifts, configured, onReload }) {
+function RsvpSection() {
   const [attending, setAttending] = useState(true);
   const [name, setName] = useState("");
   const [guests, setGuests] = useState(1);
-  const [giftId, setGiftId] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState({ state: "idle" });
-  const [doneGift, setDoneGift] = useState(null);
-
-  const available = (gifts || []).filter((g) => !g.claimed);
+  const [configured, setConfigured] = useState(true);
 
   const whatsappHref = () => {
     const parts = [
       `Oi ${EVENT.aniversariante}! Confirmando minha presença no seu aniversário 🎉`,
       `Nome: ${name || "(preencha)"}`,
-      attending
-        ? `Vou sim! Nº de pessoas: ${guests}`
-        : "Infelizmente não poderei ir 😢",
+      attending ? `Vou sim! Nº de pessoas: ${guests}` : "Infelizmente não poderei ir 😢",
     ];
-    if (attending && giftId) {
-      const g = available.find((x) => String(x.id) === String(giftId));
-      if (g) parts.push(`Presente: ${g.name}`);
-    }
     if (message) parts.push(`Recado: ${message}`);
-    return `https://wa.me/${EVENT.whatsapp}?text=${encodeURIComponent(
-      parts.join("\n")
-    )}`;
+    return `https://wa.me/${EVENT.whatsapp}?text=${encodeURIComponent(parts.join("\n"))}`;
   };
 
   async function submit(e) {
@@ -290,33 +426,21 @@ function RsvpSection({ gifts, configured, onReload }) {
           name: name.trim(),
           attending,
           guests,
-          giftId: attending && giftId ? Number(giftId) : null,
-          isPix: false,
           message: message.trim(),
         }),
       });
       const data = await res.json();
       if (!res.ok) {
-        if (data.error === "GIFT_TAKEN") {
-          setStatus({ state: "error", msg: data.message });
-          setGiftId("");
-          onReload();
-          return;
-        }
+        if (res.status === 503) setConfigured(false);
         setStatus({
           state: "error",
-          msg: data.error || "Não foi possível confirmar. Tente novamente.",
+          msg: data.error || "Não foi possível confirmar. Use o WhatsApp abaixo.",
         });
         return;
       }
-      setDoneGift(data.giftName || null);
       setStatus({ state: "ok" });
-      onReload();
     } catch {
-      setStatus({
-        state: "error",
-        msg: "Erro de conexão. Tente novamente ou fale pelo WhatsApp.",
-      });
+      setStatus({ state: "error", msg: "Erro de conexão. Tente pelo WhatsApp." });
     }
   }
 
@@ -335,18 +459,8 @@ function RsvpSection({ gifts, configured, onReload }) {
               ? `Obrigada, ${name.split(" ")[0]}! Sua presença torna tudo ainda mais especial. ✨`
               : "Vamos sentir sua falta! Obrigada por avisar. 💗"}
           </p>
-          {doneGift && (
-            <div className="note-box" style={{ maxWidth: 380, margin: "0 auto" }}>
-              🎁 Presente reservado: <strong>{doneGift}</strong>
-            </div>
-          )}
-          <div style={{ marginTop: 20 }}>
-            <a
-              href={whatsappHref()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-wa"
-            >
+          <div style={{ marginTop: 8 }}>
+            <a href={whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn btn-wa">
               💬 Avisar no WhatsApp também
             </a>
           </div>
@@ -372,16 +486,10 @@ function RsvpSection({ gifts, configured, onReload }) {
 
       <form className="form" onSubmit={submit}>
         <div className="toggle-row">
-          <div
-            className={`toggle${attending ? " active" : ""}`}
-            onClick={() => setAttending(true)}
-          >
+          <div className={`toggle${attending ? " active" : ""}`} onClick={() => setAttending(true)}>
             ✅ Eu vou!
           </div>
-          <div
-            className={`toggle no${!attending ? " active" : ""}`}
-            onClick={() => setAttending(false)}
-          >
+          <div className={`toggle no${!attending ? " active" : ""}`} onClick={() => setAttending(false)}>
             😢 Não vou
           </div>
         </div>
@@ -398,33 +506,16 @@ function RsvpSection({ gifts, configured, onReload }) {
         </div>
 
         {attending && (
-          <>
-            <div className="field">
-              <label>Quantas pessoas no total (incluindo você)?</label>
-              <input
-                type="number"
-                min={1}
-                max={20}
-                value={guests}
-                onChange={(e) => setGuests(Number(e.target.value))}
-              />
-            </div>
-
-            <div className="field">
-              <label>Presente que você vai levar (opcional)</label>
-              <select value={giftId} onChange={(e) => setGiftId(e.target.value)}>
-                <option value="">— Escolher depois / vou de Pix —</option>
-                {available.map((g) => (
-                  <option key={g.id} value={g.id}>
-                    {g.name}
-                  </option>
-                ))}
-              </select>
-              <div className="help">
-                Só aparecem os itens que ainda estão disponíveis 💕
-              </div>
-            </div>
-          </>
+          <div className="field">
+            <label>Quantas pessoas no total (incluindo você)?</label>
+            <input
+              type="number"
+              min={1}
+              max={20}
+              value={guests}
+              onChange={(e) => setGuests(Number(e.target.value))}
+            />
+          </div>
         )}
 
         <div className="field">
@@ -437,31 +528,18 @@ function RsvpSection({ gifts, configured, onReload }) {
           />
         </div>
 
-        {status.state === "error" && (
-          <div className="alert err">{status.msg}</div>
-        )}
+        {status.state === "error" && <div className="alert err">{status.msg}</div>}
 
-        {configured && (
-          <button
-            type="submit"
-            className="btn btn-primary btn-block"
-            disabled={status.state === "loading"}
-          >
-            {status.state === "loading"
-              ? "Enviando..."
-              : attending
-              ? "Confirmar presença 💗"
-              : "Enviar resposta"}
-          </button>
-        )}
+        <button type="submit" className="btn btn-primary btn-block" disabled={status.state === "loading"}>
+          {status.state === "loading"
+            ? "Enviando..."
+            : attending
+            ? "Confirmar presença 💗"
+            : "Enviar resposta"}
+        </button>
 
-        <a
-          href={whatsappHref()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-wa btn-block"
-        >
-          💬 {configured ? "Ou fale comigo no WhatsApp" : "Confirmar pelo WhatsApp"}
+        <a href={whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn btn-wa btn-block">
+          💬 Ou fale comigo no WhatsApp
         </a>
       </form>
     </section>

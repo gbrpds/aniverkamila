@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "../../../lib/supabase";
-import { GIFT_ITEMS } from "../../../lib/config";
+import { GIFT_NAMES } from "../../../lib/products";
 
 export const dynamic = "force-dynamic";
 
@@ -11,17 +11,18 @@ export async function GET() {
   // Sem Supabase configurado: devolve a lista estática (tudo disponível)
   // para o site ainda renderizar antes do setup.
   if (!supabase) {
-    const fallback = GIFT_ITEMS.map((name, i) => ({
+    const fallback = GIFT_NAMES.map((name, i) => ({
       id: -(i + 1),
       name,
       claimed: false,
+      claimed_by: null,
     }));
     return NextResponse.json({ configured: false, gifts: fallback });
   }
 
   const { data, error } = await supabase
     .from("gifts")
-    .select("id, name, claimed")
+    .select("id, name, claimed, claimed_by")
     .order("position", { ascending: true });
 
   if (error) {

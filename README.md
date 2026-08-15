@@ -59,19 +59,31 @@ No painel do Supabase, vá em **Table Editor**:
 
 ---
 
+## 🎁 Como funcionam os cards de presente
+
+Cada presente aparece num card com:
+
+- **Foto do produto** (coloque em `public/images/produtos/` — veja o
+  [README de lá](./public/images/produtos/README.md); enquanto não houver foto,
+  aparece um ícone).
+- **Botões de compra** que abrem a busca do produto no Mercado Livre, Amazon,
+  Magalu e Shopee (é só referência — o convidado compra onde quiser).
+- **Botão "Vou dar esse!"** que reserva o item: ele sai da lista pros outros,
+  então ninguém repete.
+
+Os produtos (nome, ícone, busca) ficam em
+[`lib/products.js`](./lib/products.js) e precisam ter o **mesmo nome** dos itens
+na tabela `gifts` do Supabase ([`supabase/schema.sql`](./supabase/schema.sql)).
+
 ## ✏️ Como editar as informações
 
-Quase tudo fica em **um único arquivo**: [`lib/config.js`](./lib/config.js).
-Lá você muda data, horário, endereço, WhatsApp, chave Pix, etc.
-
-Para mudar a **lista de presentes**, edite os itens em
-[`supabase/schema.sql`](./supabase/schema.sql) e rode de novo no SQL Editor
-(ou adicione/edite direto pelo Table Editor do Supabase).
+Os dados do evento (data, horário, endereço, WhatsApp, chave Pix) ficam em
+**um único arquivo**: [`lib/config.js`](./lib/config.js).
 
 ## 🖼️ Imagens
 
-As fotos e stickers do Canva vão na pasta [`public/images/`](./public/images/).
-Veja o [README de lá](./public/images/README.md) para os nomes sugeridos.
+- Stickers do Canva (capa, Nokia, etc.): pasta [`public/images/`](./public/images/).
+- Fotos dos produtos: pasta [`public/images/produtos/`](./public/images/produtos/).
 
 ---
 
