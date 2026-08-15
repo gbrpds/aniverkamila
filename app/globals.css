@@ -1,19 +1,21 @@
 /* =========================================================
-   Tema "anos 2000" / Y2K — rosa, glitter, estrelinhas
+   Tema "anos 2000" / Y2K — roxo, glitter, estrelinhas
+   (os nomes --pink-* são mantidos, mas agora carregam tons de roxo/lilás)
    ========================================================= */
 
 :root {
-  --cream: #f6efe6;
-  --cream-2: #efe6d9;
-  --pink-hot: #ff2d7e;
-  --pink: #ff5fa2;
-  --pink-soft: #ff9ac4;
-  --pink-pale: #ffd9ec;
-  --pink-pale-2: #ffe9f4;
-  --ink: #3a2733;
-  --silver: #c9c9d4;
-  --purple: #a05ad6;
-  --shadow: rgba(255, 45, 126, 0.25);
+  --cream: #f4eefa;
+  --cream-2: #ebe1f5;
+  --pink-hot: #8b2fd6; /* cor de identidade (primária) — roxo */
+  --pink: #a95fe6; /* roxo médio */
+  --pink-soft: #c9a3f0; /* lilás suave (bordas/sombras) */
+  --pink-pale: #e6d4fb; /* lilás claro */
+  --pink-pale-2: #f2e9fd; /* lilás bem claro (fundos) */
+  --ink: #33264a;
+  --silver: #c7c7d6;
+  --purple: #6d28d9; /* roxo profundo (labels/secundário) */
+  --accent-pink: #ff5fa2; /* rosa só como detalhe pontual */
+  --shadow: rgba(139, 47, 214, 0.25);
   --radius: 22px;
 }
 
@@ -33,11 +35,11 @@ body {
   background-color: var(--cream);
   background-image: radial-gradient(
       circle at 12% 18%,
-      rgba(255, 154, 196, 0.28),
+      rgba(169, 95, 230, 0.24),
       transparent 42%
     ),
-    radial-gradient(circle at 88% 8%, rgba(160, 90, 214, 0.18), transparent 40%),
-    radial-gradient(circle at 78% 92%, rgba(255, 154, 196, 0.24), transparent 45%);
+    radial-gradient(circle at 88% 8%, rgba(109, 40, 217, 0.16), transparent 40%),
+    radial-gradient(circle at 78% 92%, rgba(201, 163, 240, 0.28), transparent 45%);
   background-attachment: fixed;
   overflow-x: hidden;
   line-height: 1.5;
@@ -51,7 +53,7 @@ body::before {
   pointer-events: none;
   z-index: 0;
   opacity: 0.5;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23ff9ac4' opacity='0.55'%3E%3Cpath d='M20 10l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3Cpath d='M110 40l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M70 100l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3Cg fill='%23c9c9d4' opacity='0.5'%3E%3Cpath d='M40 70l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M120 110l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23c9a3f0' opacity='0.6'%3E%3Cpath d='M20 10l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3Cpath d='M110 40l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M70 100l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3Cg fill='%23c9c9d4' opacity='0.5'%3E%3Cpath d='M40 70l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M120 110l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .page {
@@ -83,7 +85,7 @@ h3 {
   border-radius: var(--radius);
   padding: 30px 24px;
   margin: 22px 0;
-  box-shadow: 0 10px 0 rgba(255, 154, 196, 0.35),
+  box-shadow: 0 10px 0 rgba(201, 163, 240, 0.35),
     0 18px 34px rgba(160, 90, 214, 0.12);
   position: relative;
 }
@@ -116,19 +118,23 @@ h3 {
 /* ---------- Capa / HERO ---------- */
 .hero {
   text-align: left;
-  padding: 30px 18px 28px;
+  padding: 28px 18px 0; /* sem padding embaixo: a menina encosta na base */
   background: linear-gradient(180deg, var(--pink-pale-2), var(--cream));
   border-color: var(--pink);
   margin-top: 22px;
   overflow: hidden;
 }
 
-/* Duas colunas: texto à esquerda, foto solta à direita */
+/* Duas colunas: texto à esquerda, foto solta à direita (colada na base) */
 .hero-inner {
   display: grid;
-  grid-template-columns: 1fr 0.82fr;
-  align-items: center;
-  gap: 6px;
+  grid-template-columns: 1.12fr 0.88fr;
+  align-items: end;
+  gap: 4px;
+}
+.hero-text {
+  align-self: center;
+  padding: 6px 4px 30px 12px; /* desloca o texto pra direita e dá respiro embaixo */
 }
 
 .hero .disco {
@@ -149,20 +155,22 @@ h3 {
   }
 }
 
-/* Foto da garota "solta" (PNG recortado, sem moldura) */
+/* Foto da garota "solta" (PNG recortado, sem moldura), colada na base */
 .hero-photo-free {
   position: relative;
-  align-self: stretch;
+  align-self: end;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 .hero-photo-free .girl-free {
-  width: 118%;
-  max-width: 118%;
+  display: block;
+  width: 136%;
+  max-width: 136%;
   height: auto;
-  margin-right: -8%;
-  filter: drop-shadow(0 10px 16px rgba(120, 40, 90, 0.28));
+  margin-right: -16%;
+  margin-bottom: -3px; /* encosta na borda inferior do card */
+  filter: drop-shadow(0 8px 14px rgba(120, 40, 90, 0.26));
 }
 
 .hero .kicker {
@@ -177,8 +185,8 @@ h3 {
 
 .hero .big-number {
   font-family: "Bagel Fat One", cursive;
-  font-size: clamp(76px, 26vw, 128px);
-  line-height: 0.86;
+  font-size: clamp(88px, 30vw, 150px);
+  line-height: 0.84;
   color: var(--pink-hot);
   text-shadow: 4px 4px 0 #fff, 7px 7px 0 var(--pink-soft);
   margin: 2px 0;
@@ -193,10 +201,10 @@ h3 {
 }
 
 .hero .title-top {
-  font-size: clamp(22px, 7vw, 34px);
+  font-size: clamp(24px, 7.5vw, 38px);
 }
 .hero .title-bottom {
-  font-size: clamp(20px, 6vw, 30px);
+  font-size: clamp(21px, 6.4vw, 33px);
 }
 
 .hero .amp {
@@ -290,10 +298,11 @@ h3 {
 .section-title {
   font-family: "Bagel Fat One", cursive;
   color: var(--pink-hot);
-  font-size: clamp(30px, 8.5vw, 46px);
+  font-size: clamp(29px, 8vw, 44px);
   text-align: center;
-  text-shadow: 3px 3px 0 #fff, 5px 5px 0 var(--pink-soft);
+  text-shadow: 2px 2px 0 #fff, 4px 4px 0 var(--pink-soft);
   margin-bottom: 8px;
+  line-height: 1.08;
 }
 .section-sub {
   text-align: center;
@@ -315,7 +324,7 @@ h3 {
   border-radius: 40px;
   margin: 10px auto;
   max-width: 420px;
-  box-shadow: 0 8px 0 rgba(255, 45, 126, 0.3);
+  box-shadow: 0 8px 0 rgba(139, 47, 214, 0.3);
   font-size: 14px;
 }
 
@@ -344,16 +353,43 @@ h3 {
 }
 
 /* ---------- Lista de presentes (cards de produto) ---------- */
-.gift-count {
+/* Chamada em destaque da seção de presentes */
+.gift-highlight {
   text-align: center;
   font-weight: 600;
+  font-size: 17px;
+  line-height: 1.4;
   color: var(--purple);
-  background: var(--pink-pale-2);
+  background: linear-gradient(135deg, var(--pink-pale-2), #fff);
+  border: 2px solid var(--pink-soft);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin: 0 auto 18px;
+  max-width: 460px;
+  box-shadow: 0 8px 20px rgba(139, 47, 214, 0.12);
+}
+.gift-highlight strong {
+  color: var(--pink-hot);
+}
+
+.gift-count {
+  text-align: center;
+  font-weight: 700;
+  color: #fff;
+  background: var(--pink-hot);
   border-radius: 30px;
-  padding: 8px 14px;
+  padding: 8px 16px;
   margin: 0 auto 18px;
   width: fit-content;
   font-size: 14px;
+  box-shadow: 0 6px 14px var(--shadow);
+}
+
+/* Justin maior nas telas grandes (PC) */
+@media (min-width: 620px) {
+  .justin-sticker {
+    width: 175px !important;
+  }
 }
 
 .prod-grid {
@@ -384,8 +420,8 @@ h3 {
 .prod-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  background: var(--pink-pale-2);
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, var(--pink-pale-2), var(--pink-pale));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,9 +433,9 @@ h3 {
   object-fit: cover;
 }
 .prod-img-emoji span {
-  font-size: 54px;
+  font-size: 72px;
   line-height: 1;
-  filter: drop-shadow(0 3px 4px rgba(160, 90, 214, 0.18));
+  filter: drop-shadow(0 4px 5px rgba(109, 40, 217, 0.2));
 }
 .prod-card.reserved .prod-img::after {
   content: "💝";
@@ -409,7 +445,7 @@ h3 {
   align-items: center;
   justify-content: center;
   font-size: 46px;
-  background: rgba(255, 217, 236, 0.55);
+  background: rgba(230, 212, 251, 0.6);
 }
 
 .prod-body {
@@ -491,7 +527,7 @@ h3 {
 .skeleton-card {
   aspect-ratio: 3 / 4;
   border: none;
-  background: linear-gradient(90deg, #f0e6da, #fff6ec, #f0e6da);
+  background: linear-gradient(90deg, #e6d4fb, #f7f0ff, #e6d4fb);
   background-size: 200% 100%;
   animation: sk 1.2s infinite;
 }
@@ -596,7 +632,7 @@ h3 {
 .btn-primary {
   background: var(--pink-hot);
   color: #fff;
-  box-shadow: 0 7px 0 rgba(255, 45, 126, 0.35);
+  box-shadow: 0 7px 0 rgba(139, 47, 214, 0.35);
 }
 .btn-primary:hover {
   filter: brightness(1.05);
@@ -733,7 +769,7 @@ h3 {
 .skeleton {
   height: 48px;
   border-radius: 14px;
-  background: linear-gradient(90deg, #f0e6da, #fff6ec, #f0e6da);
+  background: linear-gradient(90deg, #e6d4fb, #f7f0ff, #e6d4fb);
   background-size: 200% 100%;
   animation: sk 1.2s infinite;
 }

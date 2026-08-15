@@ -5,14 +5,14 @@ import { EVENT } from "../lib/config";
 import { findProduct, marketplaceLinks } from "../lib/products";
 
 /* Sticker PNG posicionado de forma absoluta como decoração */
-function Sticker({ src, alt = "", w, rot = 0, float = false, slow = false, style = {} }) {
+function Sticker({ src, alt = "", w, rot = 0, float = false, slow = false, className = "", style = {} }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={`/images/${src}`}
       alt={alt}
       aria-hidden={alt === "" ? "true" : undefined}
-      className={`sticker${float ? " float" : ""}${slow ? " slow" : ""}`}
+      className={`sticker${float ? " float" : ""}${slow ? " slow" : ""}${className ? " " + className : ""}`}
       style={{ width: w, "--rot": `${rot}deg`, ...style }}
     />
   );
@@ -97,7 +97,7 @@ function EventInfo() {
   ];
   return (
     <section className="card">
-      <Sticker src="baby.png" w={74} rot={8} float style={{ top: 6, right: 8 }} />
+      <Sticker src="baby.png" w={60} rot={8} float style={{ top: 4, right: 6 }} />
       <h2 className="section-title">É meu aniversárioooo</h2>
       <p className="section-sub">Marca aí no calendário! 📌</p>
 
@@ -136,7 +136,15 @@ function EventInfo() {
         </div>
       </div>
 
-      <Sticker src="justin.png" w={118} rot={-6} float slow style={{ bottom: 6, left: 6 }} />
+      <Sticker
+        src="justin.png"
+        w={118}
+        rot={-6}
+        float
+        slow
+        className="justin-sticker"
+        style={{ bottom: 6, left: 6 }}
+      />
     </section>
   );
 }
@@ -169,9 +177,9 @@ function GiftSection({ gifts, configured, onReload }) {
     <section className="card" id="presentes">
       <Sticker src="sparkles.png" w={58} rot={12} float style={{ top: 12, right: 10 }} />
       <h2 className="section-title">Lista de presentes</h2>
-      <p className="section-sub">
-        Clique em um site pra comprar e marque o que você vai dar — assim ninguém
-        repete 💕
+      <p className="gift-highlight">
+        🛍️ Clique em um site pra <strong>comprar</strong> e marque o que você vai
+        dar — <strong>assim ninguém repete</strong> 💕
       </p>
 
       {!configured && (
