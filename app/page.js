@@ -53,46 +53,80 @@ export default function Home() {
 /* ---------------- Player de música flutuante ---------------- */
 function MusicPlayer() {
   const audioRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
+  const [state, setState] = useState("idle"); // idle | loading | playing | error
   const [nudge, setNudge] = useState(true); // pulsa pra convidar o clique
 
   async function toggle() {
     const a = audioRef.current;
     if (!a) return;
     setNudge(false);
+
+    if (state === "playing") {
+      a.pause();
+      setState("idle");
+      return;
+    }
+
+    setState("loading");
     try {
-      if (playing) {
-        a.pause();
-        setPlaying(false);
-      } else {
-        a.volume = 0.6;
-        await a.play();
-        setPlaying(true);
-      }
-    } catch {
-      // navegador bloqueou (ou arquivo ausente) — mantém pausado
-      setPlaying(false);
+      a.volume = 0.6;
+      a.load(); // garante que o navegador busque o arquivo
+      await a.play();
+      setState("playing");
+    } catch (err) {
+      // arquivo ausente/erro de rede, ou bloqueio do navegador
+      setState("error");
     }
   }
 
+  const label =
+    state === "playing"
+      ? "Pausar música"
+      : state === "error"
+      ? "Música indisponível"
+      : "Tocar música";
+
   return (
     <>
-      {/* Coloque o arquivo em public/music/tema.mp3 (veja o README de lá) */}
-      <audio ref={audioRef} src="/music/tema.mp3" loop preload="none" />
+      <audio
+        ref={audioRef}
+        src="/music/tema.mp3"
+        loop
+        preload="none"
+        onEnded={() => {}}
+        onError={() => setState("error")}
+        onPause={() => setState((s) => (s === "playing" ? "idle" : s))}
+      />
       <button
-        className={`music-btn${playing ? " playing" : ""}${nudge ? " nudge" : ""}`}
+        className={`music-btn${state === "playing" ? " playing" : ""}${
+          state === "error" ? " error" : ""
+        }${nudge ? " nudge" : ""}`}
         onClick={toggle}
-        aria-label={playing ? "Pausar música" : "Tocar música"}
-        title={playing ? "Pausar música" : "Tocar música"}
+        aria-label={label}
+        title={label}
       >
-        {playing ? (
+        {state === "playing" ? (
           <span className="eq" aria-hidden="true">
-            <i /><i /><i />
+            <i />
+            <i />
+            <i />
           </span>
+        ) : state === "loading" ? (
+          <span className="music-spin" aria-hidden="true">
+            ⏳
+          </span>
+        ) : state === "error" ? (
+          <span aria-hidden="true">🔇</span>
         ) : (
           <span aria-hidden="true">🎵</span>
         )}
       </button>
+      {state === "error" && (
+        <div className="music-error-tip" role="status">
+          Não achei o áudio (<code>/music/tema.mp3</code>). Se você acabou de
+          subir, refaça o deploy na Vercel.
+        </div>
+      )}
     </>
   );
 }

@@ -825,8 +825,36 @@ h3 {
 .music-btn:active {
   transform: scale(0.94);
 }
+.music-btn.error {
+  background: var(--silver);
+}
 .music-btn.nudge {
   animation: musicNudge 1.6s ease-in-out infinite;
+}
+.music-spin {
+  display: inline-block;
+  animation: spin 1.2s linear infinite;
+}
+.music-error-tip {
+  position: fixed;
+  right: 16px;
+  bottom: 78px;
+  z-index: 40;
+  max-width: 240px;
+  background: #fff;
+  border: 2px solid var(--pink);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px var(--shadow);
+}
+.music-error-tip code {
+  background: var(--pink-pale-2);
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: 11px;
 }
 @keyframes musicNudge {
   0%,
