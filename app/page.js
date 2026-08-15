@@ -3,8 +3,22 @@
 import { useEffect, useState, useCallback } from "react";
 import { EVENT } from "../lib/config";
 
+/* Sticker PNG posicionado de forma absoluta como decoração */
+function Sticker({ src, alt = "", w, rot = 0, float = false, slow = false, style = {} }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/images/${src}`}
+      alt={alt}
+      aria-hidden={alt === "" ? "true" : undefined}
+      className={`sticker${float ? " float" : ""}${slow ? " slow" : ""}`}
+      style={{ width: w, "--rot": `${rot}deg`, ...style }}
+    />
+  );
+}
+
 export default function Home() {
-  const [gifts, setGifts] = useState(null); // null = carregando
+  const [gifts, setGifts] = useState(null);
   const [configured, setConfigured] = useState(true);
 
   const loadGifts = useCallback(async () => {
@@ -38,6 +52,8 @@ export default function Home() {
 function Hero() {
   return (
     <section className="card hero">
+      <Sticker src="sparkles.png" w={70} rot={-8} float slow style={{ top: 10, left: 10 }} />
+      <Sticker src="estrela-prata.png" w={54} rot={12} float style={{ top: 16, right: 14 }} />
       <span className="disco">🪩</span>
       <div className="kicker">✩ Anos 2000 ✩</div>
       <div className="title-top">Aniversário</div>
@@ -47,9 +63,16 @@ function Hero() {
       </div>
       <span className="amp">&amp;</span>
       <div className="title-bottom">Chá de Panela</div>
-      <div className="names">
-        💗 {EVENT.aniversariante} 💗
+
+      <div className="hero-photo">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="girl" src="/images/garota.png" alt={`${EVENT.aniversariante} sorrindo com chapéu de festa`} />
+        <Sticker src="flip-phone.png" w={92} rot={-12} float style={{ top: -18, right: -22 }} />
+        <Sticker src="camera.png" w={104} rot={10} float slow style={{ bottom: -14, left: -26 }} />
+        <Sticker src="estrela-rosa.png" w={48} rot={-6} style={{ top: 4, left: -18 }} />
       </div>
+
+      <div className="names">💗 {EVENT.aniversariante} 💗</div>
       <div style={{ marginTop: 18 }}>
         <a href="#confirmar" className="btn btn-primary">
           Confirmar presença ✨
@@ -70,6 +93,7 @@ function EventInfo() {
   ];
   return (
     <section className="card">
+      <Sticker src="baby.png" w={74} rot={8} float style={{ top: 6, right: 8 }} />
       <h2 className="section-title">É meu aniversárioooo</h2>
       <p className="section-sub">Marca aí no calendário! 📌</p>
 
@@ -112,6 +136,8 @@ function EventInfo() {
           ) : null}
         </div>
       </div>
+
+      <Sticker src="justin.png" w={74} rot={-6} float slow style={{ bottom: 8, left: 8 }} />
     </section>
   );
 }
@@ -120,9 +146,17 @@ function EventInfo() {
 function ComemorarSection() {
   return (
     <section className="card">
+      <Sticker src="boca.png" w={66} rot={-10} float style={{ top: 10, right: 10 }} />
+      <Sticker src="estrela-rosa.png" w={44} rot={8} float slow style={{ top: 18, left: 12 }} />
       <h2 className="section-title">Vem comemorar comigo!</h2>
       <div className="ribbon">{EVENT.observacoes}</div>
-      <div className="note-box">📱 {EVENT.cardapio}</div>
+
+      {/* Nokia com o recado do cardápio (imagem do Canva) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="nokia-feature" src="/images/nokia.png" alt={EVENT.cardapio} />
+      <p className="section-sub" style={{ marginTop: 14, marginBottom: 0 }}>
+        {EVENT.cardapio}
+      </p>
     </section>
   );
 }
@@ -131,6 +165,7 @@ function ComemorarSection() {
 function GiftSection({ gifts, configured }) {
   return (
     <section className="card" id="presentes">
+      <Sticker src="sparkles.png" w={58} rot={12} float style={{ top: 12, right: 10 }} />
       <h2 className="section-title">Itens para presente</h2>
       <p className="section-sub">
         Sugestões pro chá de panela — escolha 1 na hora de confirmar 💕
@@ -155,9 +190,8 @@ function GiftSection({ gifts, configured }) {
       <GiftList gifts={gifts} />
 
       <div className="pix-box">
-        <div style={{ fontWeight: 600 }}>
-          Prefere ajudar com um Pix? 💸
-        </div>
+        <Sticker src="baby.png" w={64} rot={-10} style={{ top: -22, left: 10 }} />
+        <div style={{ fontWeight: 600 }}>Prefere ajudar com um Pix? 💸</div>
         <div style={{ fontSize: 14, opacity: 0.85 }}>
           Você também pode fazer um Pix de qualquer valor
         </div>
@@ -218,7 +252,7 @@ function RsvpSection({ gifts, configured, onReload }) {
   const [guests, setGuests] = useState(1);
   const [giftId, setGiftId] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState({ state: "idle" }); // idle|loading|ok|error
+  const [status, setStatus] = useState({ state: "idle" });
   const [doneGift, setDoneGift] = useState(null);
 
   const available = (gifts || []).filter((g) => !g.claimed);
@@ -227,7 +261,9 @@ function RsvpSection({ gifts, configured, onReload }) {
     const parts = [
       `Oi ${EVENT.aniversariante}! Confirmando minha presença no seu aniversário 🎉`,
       `Nome: ${name || "(preencha)"}`,
-      attending ? `Vou sim! Nº de pessoas: ${guests}` : "Infelizmente não poderei ir 😢",
+      attending
+        ? `Vou sim! Nº de pessoas: ${guests}`
+        : "Infelizmente não poderei ir 😢",
     ];
     if (attending && giftId) {
       const g = available.find((x) => String(x.id) === String(giftId));
@@ -287,6 +323,8 @@ function RsvpSection({ gifts, configured, onReload }) {
   if (status.state === "ok") {
     return (
       <section className="card" id="confirmar">
+        <Sticker src="sparkles.png" w={60} rot={-10} float style={{ top: 12, left: 12 }} />
+        <Sticker src="estrela-rosa.png" w={46} rot={10} float slow style={{ top: 16, right: 14 }} />
         <div className="success">
           <div className="emoji">🎉💗🪩</div>
           <h2 className="section-title" style={{ fontSize: 34 }}>
@@ -319,6 +357,7 @@ function RsvpSection({ gifts, configured, onReload }) {
 
   return (
     <section className="card" id="confirmar">
+      <Sticker src="flip-phone.png" w={70} rot={12} float style={{ top: -10, right: 6 }} />
       <h2 className="section-title">Confirme sua presença!</h2>
       <p className="section-sub">
         Por favor, confirme até <strong>{EVENT.confirmarAte}</strong> 💌
@@ -373,10 +412,7 @@ function RsvpSection({ gifts, configured, onReload }) {
 
             <div className="field">
               <label>Presente que você vai levar (opcional)</label>
-              <select
-                value={giftId}
-                onChange={(e) => setGiftId(e.target.value)}
-              >
+              <select value={giftId} onChange={(e) => setGiftId(e.target.value)}>
                 <option value="">— Escolher depois / vou de Pix —</option>
                 {available.map((g) => (
                   <option key={g.id} value={g.id}>

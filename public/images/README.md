@@ -1,27 +1,23 @@
-# 📸 Pasta de imagens
+# 📸 Imagens do site
 
-Coloque aqui as fotos e artes que você quer usar no site. Depois é só subir no
-git (`git add public/images/` etc.).
+Stickers do Canva (PNG com fundo transparente) já recortados e otimizados,
+usados como decoração no site.
 
-## Onde cada imagem aparece
+| Arquivo             | Onde aparece                                         |
+| ------------------- | ---------------------------------------------------- |
+| `garota.png`        | Foto principal da capa (dentro do círculo)           |
+| `flip-phone.png`    | Capa (celular flip) e seção de confirmação            |
+| `camera.png`        | Capa (câmera digital)                                 |
+| `nokia.png`         | Seção "Vem comemorar" (recado do cardápio)            |
+| `justin.png`        | Seção do calendário                                   |
+| `baby.png`          | Coração "baby" — calendário e caixa do Pix            |
+| `boca.png`          | Seção "Vem comemorar"                                  |
+| `estrela-rosa.png`  | Estrelinhas espalhadas                                |
+| `estrela-prata.png` | Estrelinha da capa                                    |
+| `sparkles.png`      | Brilhos espalhados                                    |
 
-O site atual usa **emojis e CSS** para o visual anos 2000, então ele já funciona
-sem nenhuma imagem. Quando você tiver as fotos do Canva, me envie que eu troco os
-emojis pelas imagens reais nos lugares abaixo:
+## Trocar uma imagem
 
-| Arquivo sugerido        | Onde usar                                      |
-| ----------------------- | ---------------------------------------------- |
-| `capa.png`              | Foto principal da capa (a da criança/party hat)|
-| `disco.png`             | Bola de espelho (disco ball)                    |
-| `flip-phone.png`        | Celular flip rosa                               |
-| `tamagotchi.png`        | Tamagotchi                                       |
-| `camera.png`            | Câmera digital rosa                             |
-| `nokia.png`             | Celular Nokia com o recado                       |
-| `borboleta.png`         | Borboleta glitter                               |
-
-## Dicas
-
-- Prefira **PNG com fundo transparente** para os stickers (flip phone, câmera etc.).
-- Para a foto de capa, JPG ou PNG serve.
-- Tente deixar cada imagem com no máximo ~500 KB para o site carregar rápido.
-- Nomes de arquivo **sem espaços e sem acentos** (use `capa.png`, não `Capa Foto.png`).
+Basta substituir o arquivo por outro com o **mesmo nome** (de preferência PNG
+com fundo transparente). Para mudar posição/tamanho de um sticker, edite o
+componente `<Sticker ... />` correspondente em `app/page.js`.
