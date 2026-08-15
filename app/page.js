@@ -53,31 +53,34 @@ export default function Home() {
 function Hero() {
   return (
     <section className="card hero">
-      <Sticker src="sparkles.png" w={70} rot={-8} float slow style={{ top: 10, left: 10 }} />
-      <Sticker src="estrela-prata.png" w={54} rot={12} float style={{ top: 16, right: 14 }} />
-      <span className="disco">🪩</span>
-      <div className="kicker">✩ Anos 2000 ✩</div>
-      <div className="title-top">Aniversário</div>
-      <div className="big-number">{EVENT.idade}</div>
-      <div className="title-top" style={{ fontSize: "22px" }}>
-        anos
-      </div>
-      <span className="amp">&amp;</span>
-      <div className="title-bottom">Chá de Panela</div>
+      <Sticker src="sparkles.png" w={58} rot={-8} float slow style={{ top: 10, left: 10 }} />
+      <Sticker src="estrela-prata.png" w={46} rot={12} float style={{ top: 12, right: 12 }} />
 
-      <div className="hero-photo">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="girl" src="/images/garota.png" alt={`${EVENT.aniversariante} sorrindo com chapéu de festa`} />
-        <Sticker src="flip-phone.png" w={92} rot={-12} float style={{ top: -18, right: -22 }} />
-        <Sticker src="camera.png" w={104} rot={10} float slow style={{ bottom: -14, left: -26 }} />
-        <Sticker src="estrela-rosa.png" w={48} rot={-6} style={{ top: 4, left: -18 }} />
-      </div>
+      <div className="hero-inner">
+        <div className="hero-text">
+          <span className="disco">🪩</span>
+          <div className="kicker">✩ Anos 2000 ✩</div>
+          <div className="title-top">Aniversário</div>
+          <div className="big-number">{EVENT.idade}</div>
+          <div className="title-top" style={{ fontSize: "20px" }}>
+            anos
+          </div>
+          <span className="amp">&amp;</span>
+          <div className="title-bottom">Chá de Panela</div>
+          <div className="names">💗 {EVENT.aniversariante} 💗</div>
+          <div className="hero-cta">
+            <a href="#confirmar" className="btn btn-primary">
+              Confirmar presença ✨
+            </a>
+          </div>
+        </div>
 
-      <div className="names">💗 {EVENT.aniversariante} 💗</div>
-      <div style={{ marginTop: 18 }}>
-        <a href="#confirmar" className="btn btn-primary">
-          Confirmar presença ✨
-        </a>
+        <div className="hero-photo-free">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="girl-free" src="/images/garota.png" alt={`${EVENT.aniversariante} sorrindo com chapéu de festa`} />
+          <Sticker src="flip-phone.png" w={70} rot={-12} float style={{ top: -6, right: -8 }} />
+          <Sticker src="camera.png" w={78} rot={10} float slow style={{ bottom: 0, left: -20 }} />
+        </div>
       </div>
     </section>
   );
@@ -133,7 +136,7 @@ function EventInfo() {
         </div>
       </div>
 
-      <Sticker src="justin.png" w={74} rot={-6} float slow style={{ bottom: 8, left: 8 }} />
+      <Sticker src="justin.png" w={118} rot={-6} float slow style={{ bottom: 6, left: 6 }} />
     </section>
   );
 }
