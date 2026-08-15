@@ -39,19 +39,19 @@ alter table public.rsvps enable row level security;
 
 -- Popula a lista de presentes (idempotente) -----------------
 insert into public.gifts (name, position) values
-  ('Jogo de panelas (antiaderente)', 1),
-  ('Tábua de corte', 2),
-  ('Talheres (jogo completo)', 3),
-  ('Descanso de panela', 4),
-  ('Saca-rolha', 5),
-  ('Liquidificador', 6),
-  ('Porta-temperos', 7),
+  ('Jogo de panelas antiaderente', 1),
+  ('Tábua de corte Bamboo Mor 50x30cm', 2),
+  ('Faqueiro Tramontina Búzios 24 peças', 3),
+  ('Kit 4 descansos de panela de bambu', 4),
+  ('Saca-rolhas Brinox', 5),
+  ('Liquidificador Mondial Easy Power 550W', 6),
+  ('Porta-temperos inox 12 potes', 7),
   ('Espelho para banheiro', 8),
-  ('Porta-escova de dentes', 9),
-  ('Porta-sabonete', 10),
-  ('Abajur', 11),
-  ('Almofadas', 12),
-  ('Lençol / Fronhas', 13),
-  ('Tapete para cozinha', 14),
-  ('Secador de cabelo', 15)
+  ('Porta-escova de dentes Dental Up', 9),
+  ('Porta-sabonete líquido de vidro 330ml', 10),
+  ('Abajur Home Line Charlot 51cm', 11),
+  ('Kit de almofadas decorativas', 12),
+  ('Jogo de cama Teka Crystal 4 peças 100% algodão', 13),
+  ('Tapete passadeira antiderrapante para cozinha 1,30m', 14),
+  ('Secador Mondial Travel Golden Rose', 15)
 on conflict (name) do nothing;

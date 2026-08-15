@@ -7,23 +7,23 @@ Coloque aqui a foto de cada presente. Enquanto não houver foto, o card mostra u
 
 Salve cada foto com **exatamente** o nome abaixo (formato `.jpg`) e suba no git:
 
-| Produto                          | Nome do arquivo                       |
-| -------------------------------- | ------------------------------------- |
-| Jogo de panelas (antiaderente)   | `jogo-de-panelas-antiaderente.jpg`    |
-| Tábua de corte                   | `tabua-de-corte.jpg`                  |
-| Talheres (jogo completo)         | `jogo-de-talheres.jpg`                |
-| Descanso de panela               | `descanso-de-panela.jpg`              |
-| Saca-rolha                       | `saca-rolha.jpg`                      |
-| Liquidificador                   | `liquidificador.jpg`                  |
-| Porta-temperos                   | `porta-temperos.jpg`                  |
-| Espelho para banheiro            | `espelho-banheiro.jpg`               |
-| Porta-escova de dentes           | `porta-escova-de-dentes.jpg`          |
-| Porta-sabonete                   | `porta-sabonete.jpg`                  |
-| Abajur                           | `abajur.jpg`                          |
-| Almofadas                        | `almofadas.jpg`                       |
-| Lençol / Fronhas                 | `lencol-fronhas.jpg`                  |
-| Tapete para cozinha              | `tapete-cozinha.jpg`                  |
-| Secador de cabelo                | `secador-de-cabelo.jpg`               |
+| Produto                                     | Nome do arquivo                    |
+| ------------------------------------------- | ---------------------------------- |
+| Jogo de panelas antiaderente                | `jogo-de-panelas-antiaderente.jpg` |
+| Tábua de corte Bamboo Mor 50x30cm           | `tabua-de-corte-bamboo.jpg`        |
+| Faqueiro Tramontina Búzios 24 peças         | `faqueiro-tramontina-buzios.jpg`   |
+| Kit 4 descansos de panela de bambu          | `descanso-panela-bambu.jpg`        |
+| Saca-rolhas Brinox                          | `saca-rolhas-brinox.jpg`           |
+| Liquidificador Mondial Easy Power 550W      | `liquidificador-mondial.jpg`       |
+| Porta-temperos inox 12 potes                | `porta-temperos-inox.jpg`          |
+| Espelho para banheiro                       | `espelho-banheiro.jpg`             |
+| Porta-escova de dentes Dental Up            | `porta-escova-dental-up.jpg`       |
+| Porta-sabonete líquido de vidro 330ml       | `porta-sabonete-vidro.jpg`         |
+| Abajur Home Line Charlot 51cm               | `abajur-charlot.jpg`               |
+| Kit de almofadas decorativas                | `kit-almofadas.jpg`                |
+| Jogo de cama Teka Crystal 4 peças 100% alg. | `jogo-cama-teka-crystal.jpg`       |
+| Tapete passadeira antiderrapante p/ cozinha | `tapete-passadeira-cozinha.jpg`    |
+| Secador Mondial Travel Golden Rose          | `secador-mondial-travel.jpg`       |
 
 ## Dicas
 
