@@ -39,6 +39,7 @@ export default function Home() {
 
   return (
     <main className="page">
+      <Confetti />
       <MusicPlayer />
       <Hero />
       <EventInfo />
@@ -50,84 +51,177 @@ export default function Home() {
   );
 }
 
-/* ---------------- Player de música flutuante ---------------- */
+/* ---------------- Confete de aniversário (na entrada) ---------------- */
+function Confetti() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canvas = ref.current;
+    if (!canvas || reduce) return;
+    const ctx = canvas.getContext("2d");
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+    const onResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", onResize);
+
+    const colors = ["#8b2fd6", "#a95fe6", "#ff5fa2", "#ffd1ea", "#ffe14d", "#c9a3f0", "#ffffff"];
+    // Dois "canhões" nas laterais de baixo, mirando pra cima/centro
+    const parts = [];
+    const spawn = (ox, oy, dir) => {
+      for (let i = 0; i < 70; i++) {
+        const angle = (-Math.PI / 2) + dir * (Math.random() * 0.7) - 0.35 * dir;
+        const speed = 9 + Math.random() * 9;
+        parts.push({
+          x: ox,
+          y: oy,
+          vx: Math.cos(angle) * speed + dir * 2,
+          vy: Math.sin(angle) * speed - Math.random() * 4,
+          r: 5 + Math.random() * 7,
+          c: colors[(Math.random() * colors.length) | 0],
+          rot: Math.random() * Math.PI,
+          vr: -0.25 + Math.random() * 0.5,
+          shape: Math.random() < 0.5 ? "rect" : "circ",
+        });
+      }
+    };
+    spawn(w * 0.08, h + 10, 1);
+    spawn(w * 0.92, h + 10, -1);
+    spawn(w * 0.5, h + 10, 0);
+
+    const start = performance.now();
+    let raf;
+    const frame = (t) => {
+      const elapsed = t - start;
+      ctx.clearRect(0, 0, w, h);
+      parts.forEach((p) => {
+        p.vy += 0.22; // gravidade
+        p.vx *= 0.995;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        const fade = elapsed > 3500 ? Math.max(0, 1 - (elapsed - 3500) / 2000) : 1;
+        ctx.globalAlpha = fade;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.c;
+        if (p.shape === "rect") ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.55);
+        else {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.r / 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+      ctx.globalAlpha = 1;
+      if (elapsed < 5500) raf = requestAnimationFrame(frame);
+      else ctx.clearRect(0, 0, w, h);
+    };
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  return <canvas ref={ref} className="confetti-canvas" aria-hidden="true" />;
+}
+
+/* ---------------- Player de música (autoplay + volume) ---------------- */
 function MusicPlayer() {
   const audioRef = useRef(null);
-  const [state, setState] = useState("idle"); // idle | loading | playing | error
-  const [nudge, setNudge] = useState(true); // pulsa pra convidar o clique
+  const [playing, setPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.6);
+  const [started, setStarted] = useState(false); // já começou alguma vez?
 
-  async function toggle() {
+  useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
-    setNudge(false);
+    a.volume = volume;
 
-    if (state === "playing") {
+    // 1) tenta tocar automaticamente ao entrar
+    a.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        // 2) se o navegador bloquear, começa no primeiro toque/clique/tecla
+        const onFirst = () => {
+          const el = audioRef.current;
+          if (el && el.paused) {
+            el.play().then(() => setPlaying(true)).catch(() => {});
+          }
+          remove();
+        };
+        const evts = ["pointerdown", "touchstart", "keydown"];
+        const remove = () => evts.forEach((e) => window.removeEventListener(e, onFirst));
+        evts.forEach((e) => window.addEventListener(e, onFirst, { passive: true }));
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function toggle() {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) {
       a.pause();
-      setState("idle");
-      return;
-    }
-
-    setState("loading");
-    try {
-      a.volume = 0.6;
-      a.load(); // garante que o navegador busque o arquivo
-      await a.play();
-      setState("playing");
-    } catch (err) {
-      // arquivo ausente/erro de rede, ou bloqueio do navegador
-      setState("error");
+    } else {
+      a.play().catch(() => {});
     }
   }
-
-  const label =
-    state === "playing"
-      ? "Pausar música"
-      : state === "error"
-      ? "Música indisponível"
-      : "Tocar música";
+  function changeVol(e) {
+    const v = Number(e.target.value);
+    setVolume(v);
+    if (audioRef.current) audioRef.current.volume = v;
+  }
 
   return (
-    <>
+    <div className={`music-player${!started ? " nudge" : ""}`}>
       <audio
         ref={audioRef}
         src="/music/tema.mp3"
         loop
-        preload="none"
-        onEnded={() => {}}
-        onError={() => setState("error")}
-        onPause={() => setState((s) => (s === "playing" ? "idle" : s))}
+        preload="auto"
+        onPlay={() => {
+          setPlaying(true);
+          setStarted(true);
+        }}
+        onPause={() => setPlaying(false)}
       />
       <button
-        className={`music-btn${state === "playing" ? " playing" : ""}${
-          state === "error" ? " error" : ""
-        }${nudge ? " nudge" : ""}`}
+        className="mp-toggle"
         onClick={toggle}
-        aria-label={label}
-        title={label}
+        aria-label={playing ? "Pausar música" : "Tocar música"}
+        title={playing ? "Pausar música" : "Tocar música"}
       >
-        {state === "playing" ? (
+        {playing ? (
           <span className="eq" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
-        ) : state === "loading" ? (
-          <span className="music-spin" aria-hidden="true">
-            ⏳
-          </span>
-        ) : state === "error" ? (
-          <span aria-hidden="true">🔇</span>
         ) : (
           <span aria-hidden="true">🎵</span>
         )}
       </button>
-      {state === "error" && (
-        <div className="music-error-tip" role="status">
-          Não achei o áudio (<code>/music/tema.mp3</code>). Se você acabou de
-          subir, refaça o deploy na Vercel.
-        </div>
-      )}
-    </>
+      <div className="mp-vol">
+        <span aria-hidden="true">{volume === 0 ? "🔇" : "🔉"}</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={changeVol}
+          aria-label="Volume da música"
+        />
+      </div>
+    </div>
   );
 }
 

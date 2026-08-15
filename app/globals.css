@@ -799,97 +799,124 @@ h3 {
   }
 }
 
-/* ---------- Player de música flutuante ---------- */
-.music-btn {
+/* ---------- Confete ---------- */
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* ---------- Player de música (painel com volume) ---------- */
+.music-player {
   position: fixed;
   right: 16px;
   bottom: 16px;
   z-index: 40;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: var(--pink-hot);
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px var(--shadow);
-  transition: transform 0.15s, filter 0.15s;
+  gap: 8px;
+  padding: 7px 12px 7px 7px;
+  background: var(--pink-hot);
+  border: 2px solid #fff;
+  border-radius: 40px;
+  box-shadow: 0 8px 22px var(--shadow);
+  color: #fff;
 }
-.music-btn:hover {
-  filter: brightness(1.08);
-}
-.music-btn:active {
-  transform: scale(0.94);
-}
-.music-btn.error {
-  background: var(--silver);
-}
-.music-btn.nudge {
-  animation: musicNudge 1.6s ease-in-out infinite;
-}
-.music-spin {
-  display: inline-block;
-  animation: spin 1.2s linear infinite;
-}
-.music-error-tip {
-  position: fixed;
-  right: 16px;
-  bottom: 78px;
-  z-index: 40;
-  max-width: 240px;
-  background: #fff;
-  border: 2px solid var(--pink);
-  color: var(--ink);
-  font-size: 12px;
-  line-height: 1.4;
-  padding: 10px 12px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px var(--shadow);
-}
-.music-error-tip code {
-  background: var(--pink-pale-2);
-  padding: 1px 4px;
-  border-radius: 4px;
-  font-size: 11px;
+.music-player.nudge {
+  animation: musicNudge 1.7s ease-in-out infinite;
 }
 @keyframes musicNudge {
   0%,
   100% {
-    transform: scale(1);
-    box-shadow: 0 8px 20px var(--shadow);
+    box-shadow: 0 8px 22px var(--shadow);
   }
   50% {
-    transform: scale(1.08);
-    box-shadow: 0 8px 26px rgba(139, 47, 214, 0.5);
+    box-shadow: 0 8px 28px rgba(139, 47, 214, 0.55);
   }
 }
+.mp-toggle {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.12s;
+}
+.mp-toggle:hover {
+  background: rgba(255, 255, 255, 0.34);
+}
+.mp-toggle:active {
+  transform: scale(0.92);
+}
+.mp-vol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+/* Slider de volume */
+.mp-vol input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 78px;
+  height: 6px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.4);
+  outline: none;
+  cursor: pointer;
+}
+.mp-vol input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.mp-vol input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
 /* Equalizer animado quando tocando */
-.music-btn .eq {
+.eq {
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 20px;
+  height: 18px;
 }
-.music-btn .eq i {
+.eq i {
   width: 4px;
   background: #fff;
   border-radius: 2px;
   animation: eqbar 0.9s ease-in-out infinite;
 }
-.music-btn .eq i:nth-child(1) {
-  height: 8px;
+.eq i:nth-child(1) {
+  height: 7px;
   animation-delay: 0s;
 }
-.music-btn .eq i:nth-child(2) {
-  height: 18px;
+.eq i:nth-child(2) {
+  height: 16px;
   animation-delay: 0.2s;
 }
-.music-btn .eq i:nth-child(3) {
-  height: 12px;
+.eq i:nth-child(3) {
+  height: 11px;
   animation-delay: 0.4s;
 }
 @keyframes eqbar {
@@ -899,6 +926,11 @@ h3 {
   }
   50% {
     transform: scaleY(1);
+  }
+}
+@media (max-width: 380px) {
+  .mp-vol input[type="range"] {
+    width: 60px;
   }
 }
 
