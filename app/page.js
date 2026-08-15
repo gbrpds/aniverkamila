@@ -49,38 +49,89 @@ export default function Home() {
   );
 }
 
-/* ---------------- SLIDE 1: Capa ---------------- */
+/* Título estilo revista / letras recortadas (ransom note) */
+function Ransom({ text }) {
+  const bg = ["#ffffff", "var(--pink-hot)", "var(--accent-pink)", "var(--pink)", "var(--ink)", "#ffe14d", "var(--purple)"];
+  const fg = ["var(--pink-hot)", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "var(--ink)", "#ffffff"];
+  const rot = [-6, 4, -3, 6, -5, 2, -2, 5, -4, 3];
+  const fonts = [
+    '"Bagel Fat One", cursive',
+    'Georgia, serif',
+    '"Fredoka", sans-serif',
+    '"Courier New", monospace',
+    '"Times New Roman", serif',
+  ];
+  return (
+    <div className="ransom" aria-label={text}>
+      {text.split("").map((ch, i) => {
+        if (ch === " ") return <span key={i} style={{ background: "transparent", boxShadow: "none", width: 8 }} aria-hidden="true" />;
+        const c = i % bg.length;
+        return (
+          <span
+            key={i}
+            aria-hidden="true"
+            style={{
+              background: bg[c],
+              color: fg[c],
+              fontFamily: fonts[i % fonts.length],
+              transform: `rotate(${rot[i % rot.length]}deg)`,
+            }}
+          >
+            {ch}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---------------- SLIDE 1: Capa (colagem estilo convite) ---------------- */
 function Hero() {
   return (
     <section className="card hero">
-      <Sticker src="sparkles.png" w={58} rot={-8} float slow style={{ top: 10, left: 10 }} />
-      <Sticker src="estrela-prata.png" w={46} rot={12} float style={{ top: 12, right: 12 }} />
+      {/* bandeirinhas + decorações do topo */}
+      <div className="bunting" aria-hidden="true">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <i key={i} />
+        ))}
+      </div>
+      <Sticker src="estrela-prata.png" w={50} rot={-10} float slow style={{ top: 30, left: 8 }} />
+      <Sticker src="sparkles.png" w={46} rot={8} float style={{ top: 64, left: 20 }} />
+      <Sticker src="estrela-rosa.png" w={44} rot={12} float style={{ top: 34, right: 12 }} />
 
-      <div className="hero-inner">
-        <div className="hero-text">
-          <span className="disco">🪩</span>
-          <div className="kicker">✩ Anos 2000 ✩</div>
-          <div className="title-top">Aniversário</div>
-          <div className="big-number">{EVENT.idade}</div>
-          <div className="title-top" style={{ fontSize: "20px" }}>
-            anos
-          </div>
-          <span className="amp">&amp;</span>
-          <div className="title-bottom">Chá de Panela</div>
-          <div className="names">💗 {EVENT.aniversariante} 💗</div>
-          <div className="hero-cta">
-            <a href="#confirmar" className="btn btn-primary">
-              Confirmar presença ✨
-            </a>
-          </div>
-        </div>
+      <div className="kicker">✩ Anos 2000 ✩</div>
 
-        <div className="hero-photo-free">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="girl-free" src="/images/garota.png" alt={`${EVENT.aniversariante} sorrindo com chapéu de festa`} />
-          <Sticker src="flip-phone.png" w={70} rot={-12} float style={{ top: -6, right: -8 }} />
-          <Sticker src="camera.png" w={78} rot={10} float slow style={{ bottom: 0, left: -20 }} />
-        </div>
+      <div className="hero-collage">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="girl-bw" src="/images/garota.png" alt={`${EVENT.aniversariante} sorrindo com chapéu de festa`} />
+
+        {/* stickers ao redor da foto */}
+        <Sticker src="boca.png" w={52} rot={-12} style={{ top: "26%", right: "-4%" }} />
+        <Sticker src="boca.png" w={40} rot={10} style={{ top: "48%", left: "-6%" }} />
+        <Sticker src="estrela-rosa.png" w={40} rot={-8} float style={{ top: "6%", left: "-2%" }} />
+        <Sticker src="sparkles.png" w={38} rot={6} float slow style={{ bottom: "18%", right: "-4%" }} />
+
+        {/* número balão */}
+        <div className="balloon-number">{EVENT.idade}</div>
+      </div>
+
+      <Ransom text="ANIVERSÁRIO" />
+      <div className="hero-sub2">&amp; Chá de Panela 🍳</div>
+
+      <div className="hero-datetime">
+        {EVENT.data} <span>|</span> {EVENT.horario}
+      </div>
+      <div className="hero-loc">
+        📍 {EVENT.local} · {EVENT.endereco}
+      </div>
+      <div className="hero-note">
+        Sua presença torna tudo ainda mais especial! 💜
+      </div>
+
+      <div className="hero-cta">
+        <a href="#confirmar" className="btn btn-primary">
+          Confirmar presença ✨
+        </a>
       </div>
     </section>
   );
