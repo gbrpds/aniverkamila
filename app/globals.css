@@ -1,0 +1,548 @@
+/* =========================================================
+   Tema "anos 2000" / Y2K — rosa, glitter, estrelinhas
+   ========================================================= */
+
+:root {
+  --cream: #f6efe6;
+  --cream-2: #efe6d9;
+  --pink-hot: #ff2d7e;
+  --pink: #ff5fa2;
+  --pink-soft: #ff9ac4;
+  --pink-pale: #ffd9ec;
+  --pink-pale-2: #ffe9f4;
+  --ink: #3a2733;
+  --silver: #c9c9d4;
+  --purple: #a05ad6;
+  --shadow: rgba(255, 45, 126, 0.25);
+  --radius: 22px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Fredoka", system-ui, -apple-system, sans-serif;
+  background-color: var(--cream);
+  background-image: radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 154, 196, 0.28),
+      transparent 42%
+    ),
+    radial-gradient(circle at 88% 8%, rgba(160, 90, 214, 0.18), transparent 40%),
+    radial-gradient(circle at 78% 92%, rgba(255, 154, 196, 0.24), transparent 45%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Fundo com estrelinhas pixeladas discretas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23ff9ac4' opacity='0.55'%3E%3Cpath d='M20 10l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3Cpath d='M110 40l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M70 100l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3Cg fill='%23c9c9d4' opacity='0.5'%3E%3Cpath d='M40 70l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3Cpath d='M120 110l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* ---------- Tipografia ---------- */
+.display {
+  font-family: "Bagel Fat One", "Fredoka", cursive;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: 0.5px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+/* ---------- Seção base (cada "prancheta") ---------- */
+.card {
+  background: var(--cream);
+  border: 3px solid var(--pink-soft);
+  border-radius: var(--radius);
+  padding: 30px 24px;
+  margin: 22px 0;
+  box-shadow: 0 10px 0 rgba(255, 154, 196, 0.35),
+    0 18px 34px rgba(160, 90, 214, 0.12);
+  position: relative;
+}
+
+/* ---------- Capa / HERO ---------- */
+.hero {
+  text-align: center;
+  padding: 46px 22px 40px;
+  background: linear-gradient(180deg, var(--pink-pale-2), var(--cream));
+  border-color: var(--pink);
+  margin-top: 22px;
+  overflow: hidden;
+}
+
+.hero .disco {
+  font-size: 46px;
+  animation: spin 6s linear infinite, bob 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bob {
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.hero .kicker {
+  display: inline-block;
+  margin: 14px 0 6px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--purple);
+}
+
+.hero .big-number {
+  font-family: "Bagel Fat One", cursive;
+  font-size: clamp(90px, 30vw, 150px);
+  line-height: 0.9;
+  color: var(--pink-hot);
+  text-shadow: 4px 4px 0 #fff, 7px 7px 0 var(--pink-soft);
+  margin: 4px 0;
+}
+
+.hero .title-top,
+.hero .title-bottom {
+  font-family: "Bagel Fat One", cursive;
+  color: var(--pink-hot);
+  text-shadow: 2px 2px 0 #fff;
+}
+
+.hero .title-top {
+  font-size: clamp(26px, 8vw, 40px);
+}
+.hero .title-bottom {
+  font-size: clamp(22px, 6.5vw, 34px);
+}
+
+.hero .amp {
+  font-family: "Bagel Fat One", cursive;
+  color: var(--purple);
+  font-size: 26px;
+  display: block;
+  margin: 4px 0;
+}
+
+.hero .names {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+/* ---------- Chips / detalhes do evento ---------- */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.info-item {
+  background: var(--pink-pale-2);
+  border: 2px solid var(--pink-soft);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+.info-item.full {
+  grid-column: 1 / -1;
+}
+.info-item .ico {
+  font-size: 26px;
+}
+.info-item .label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--purple);
+  font-weight: 600;
+  margin-top: 4px;
+}
+.info-item .value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.calendar {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0 18px;
+  flex-wrap: wrap;
+}
+.cal-day {
+  width: 52px;
+  padding: 8px 0;
+  text-align: center;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid var(--pink-pale);
+  font-weight: 500;
+}
+.cal-day.on {
+  background: var(--pink-hot);
+  color: #fff;
+  border-color: var(--pink-hot);
+  transform: scale(1.12);
+  box-shadow: 0 6px 14px var(--shadow);
+}
+.cal-day .m {
+  font-size: 10px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ---------- Título de seção ---------- */
+.section-title {
+  font-family: "Bagel Fat One", cursive;
+  color: var(--pink-hot);
+  font-size: clamp(30px, 8.5vw, 46px);
+  text-align: center;
+  text-shadow: 3px 3px 0 #fff, 5px 5px 0 var(--pink-soft);
+  margin-bottom: 8px;
+}
+.section-sub {
+  text-align: center;
+  color: var(--ink);
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+/* ---------- Faixa / banner ---------- */
+.ribbon {
+  display: block;
+  text-align: center;
+  background: var(--pink-hot);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border-radius: 40px;
+  margin: 10px auto;
+  max-width: 420px;
+  box-shadow: 0 8px 0 rgba(255, 45, 126, 0.3);
+  font-size: 14px;
+}
+
+.note-box {
+  background: var(--pink-pale-2);
+  border: 2px dashed var(--pink);
+  border-radius: 16px;
+  padding: 16px 18px;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 14px;
+}
+
+/* ---------- Lista de presentes ---------- */
+.gift-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.gift-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot.free {
+  background: var(--pink);
+}
+.dot.taken {
+  background: var(--silver);
+}
+
+.gift-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.gift-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid var(--pink-pale);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.gift-row .heart {
+  font-size: 18px;
+}
+.gift-row .name {
+  flex: 1;
+  font-weight: 500;
+}
+.gift-row .badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--pink-pale);
+  color: var(--pink-hot);
+  white-space: nowrap;
+}
+.gift-row.taken {
+  opacity: 0.55;
+}
+.gift-row.taken .name {
+  text-decoration: line-through;
+}
+.gift-row.taken .badge {
+  background: #ececf1;
+  color: #8a8a97;
+}
+.gift-row.taken .heart {
+  filter: grayscale(1);
+}
+
+/* ---------- Pix ---------- */
+.pix-box {
+  margin-top: 20px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--pink-pale-2), #fff);
+  border: 2px solid var(--pink);
+  border-radius: 18px;
+  padding: 18px;
+}
+.pix-key {
+  font-family: "Fredoka", monospace;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--pink-hot);
+  margin: 6px 0 12px;
+  word-break: break-all;
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 40px;
+  padding: 13px 26px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s;
+}
+.btn:active {
+  transform: translateY(2px);
+}
+.btn-primary {
+  background: var(--pink-hot);
+  color: #fff;
+  box-shadow: 0 7px 0 rgba(255, 45, 126, 0.35);
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+.btn-ghost {
+  background: #fff;
+  color: var(--pink-hot);
+  border: 2px solid var(--pink);
+}
+.btn-wa {
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 7px 0 rgba(18, 140, 70, 0.35);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-block {
+  width: 100%;
+}
+
+/* ---------- Formulário de RSVP ---------- */
+.form {
+  display: grid;
+  gap: 16px;
+}
+.field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field select,
+.field textarea {
+  width: 100%;
+  font-family: "Fredoka", sans-serif;
+  font-size: 16px;
+  padding: 13px 14px;
+  border: 2px solid var(--pink-pale);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.12s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--pink);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.toggle-row {
+  display: flex;
+  gap: 10px;
+}
+.toggle {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 14px;
+  border: 2px solid var(--pink-pale);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.12s;
+}
+.toggle.active {
+  background: var(--pink-hot);
+  color: #fff;
+  border-color: var(--pink-hot);
+}
+.toggle.active.no {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+
+.help {
+  font-size: 13px;
+  color: var(--purple);
+  margin-top: 4px;
+}
+
+.alert {
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-weight: 500;
+  text-align: center;
+}
+.alert.err {
+  background: #ffe1e8;
+  border: 2px solid #ff6b8b;
+  color: #b3163f;
+}
+.alert.ok {
+  background: #e5ffe9;
+  border: 2px solid #3ccf6a;
+  color: #147a37;
+}
+.alert.warn {
+  background: #fff5d6;
+  border: 2px solid #f0c419;
+  color: #8a6d00;
+}
+
+/* ---------- Sucesso ---------- */
+.success {
+  text-align: center;
+  padding: 20px 0;
+}
+.success .emoji {
+  font-size: 60px;
+}
+
+/* ---------- Rodapé ---------- */
+.footer {
+  text-align: center;
+  padding: 30px 10px 10px;
+  color: var(--purple);
+  font-size: 14px;
+}
+.footer .hearts {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.skeleton {
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #f0e6da, #fff6ec, #f0e6da);
+  background-size: 200% 100%;
+  animation: sk 1.2s infinite;
+}
+@keyframes sk {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .card {
+    padding: 24px 16px;
+  }
+  .cal-day {
+    width: 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
