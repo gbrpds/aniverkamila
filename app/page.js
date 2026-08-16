@@ -479,6 +479,7 @@ function ProductCard({ gift, configured, onReserve }) {
     url: "",
   };
   const mkt = marketplaceOf(p.url);
+  const hasStore = Boolean(p.url) && mkt.key !== "loja";
 
   return (
     <div className={`prod-card${gift.claimed ? " reserved" : ""}`}>
@@ -486,10 +487,12 @@ function ProductCard({ gift, configured, onReserve }) {
       <div className="prod-body">
         <div className="prod-name">{gift.name}</div>
 
-        <div className="prod-buy">
-          <span className="prod-buy-label">Produto de</span>
-          <span className={`mkt-tag mkt-${mkt.key}`}>{mkt.label}</span>
-        </div>
+        {hasStore && (
+          <div className="prod-buy">
+            <span className="prod-buy-label">Produto de</span>
+            <span className={`mkt-tag mkt-${mkt.key}`}>{mkt.label}</span>
+          </div>
+        )}
 
         <div className="prod-actions">
           {p.url ? (

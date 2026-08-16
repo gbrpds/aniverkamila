@@ -482,7 +482,6 @@ h3 {
 }
 
 .prod-buy {
-  margin-top: auto;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -525,8 +524,9 @@ h3 {
   color: var(--purple);
 }
 
-/* Botões de ação do card (Compre aqui + Vou dar esse) */
+/* Botões de ação do card (Comprar Agora + Vou dar esse) */
 .prod-actions {
+  margin-top: auto;
   display: flex;
   gap: 8px;
 }
