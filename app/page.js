@@ -405,14 +405,17 @@ function GiftSection({ gifts, configured, onReload }) {
       <Sticker src="sparkles.png" w={58} rot={12} float style={{ top: 12, right: 10 }} />
       <h2 className="section-title">Lista de presentes</h2>
       <p className="gift-highlight">
-        🛍️ Clique em <strong>Compre aqui</strong> pra ir direto ao produto e
+        🛍️ Clique em <strong>Comprar Agora</strong> pra ir direto ao produto e
         marque <strong>Vou dar esse!</strong> — assim{" "}
         <strong>ninguém repete</strong> 💕
       </p>
       <div className="delivery-note">
-        📦 Você pode <strong>enviar o presente para o endereço da Kamila</strong>{" "}
-        (chame ela no WhatsApp pra combinar) ou{" "}
-        <strong>entregar no dia da festa</strong> 💜
+        📦 Você pode <strong>entregar o presente no dia da festa</strong> ou{" "}
+        <strong>enviar para o endereço da Kamila</strong>:
+        <br />
+        <span className="delivery-address">
+          Rua Família Gonçalves Carneiro, 441 — Apartamento 303, Bloco 17
+        </span>
       </div>
 
       {!configured && (
@@ -496,7 +499,7 @@ function ProductCard({ gift, configured, onReserve }) {
               rel="noopener noreferrer"
               className="btn prod-buy-btn"
             >
-              🛒 Compre aqui
+              🛒 Comprar Agora
             </a>
           ) : null}
 

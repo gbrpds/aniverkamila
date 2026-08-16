@@ -577,6 +577,12 @@ h3 {
 .delivery-note strong {
   color: var(--pink-hot);
 }
+.delivery-address {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 700;
+  color: var(--purple);
+}
 
 .skeleton-card {
   aspect-ratio: 3 / 4;
