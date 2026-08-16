@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { EVENT } from "../lib/config";
-import { findProduct, marketplaceLinks } from "../lib/products";
+import { findProduct, marketplaceOf } from "../lib/products";
 
 /* Sticker PNG posicionado de forma absoluta como decoração */
 function Sticker({ src, alt = "", w, rot = 0, float = false, slow = false, className = "", style = {} }) {
@@ -405,9 +405,15 @@ function GiftSection({ gifts, configured, onReload }) {
       <Sticker src="sparkles.png" w={58} rot={12} float style={{ top: 12, right: 10 }} />
       <h2 className="section-title">Lista de presentes</h2>
       <p className="gift-highlight">
-        🛍️ Clique em um site pra <strong>comprar</strong> e marque o que você vai
-        dar — <strong>assim ninguém repete</strong> 💕
+        🛍️ Clique em <strong>Compre aqui</strong> pra ir direto ao produto e
+        marque <strong>Vou dar esse!</strong> — assim{" "}
+        <strong>ninguém repete</strong> 💕
       </p>
+      <div className="delivery-note">
+        📦 Você pode <strong>enviar o presente para o endereço da Kamila</strong>{" "}
+        (chame ela no WhatsApp pra combinar) ou{" "}
+        <strong>entregar no dia da festa</strong> 💜
+      </div>
 
       {!configured && (
         <div className="alert warn" style={{ marginBottom: 16 }}>
@@ -467,9 +473,9 @@ function ProductCard({ gift, configured, onReserve }) {
     name: gift.name,
     slug: "",
     emoji: "🎁",
-    query: gift.name,
+    url: "",
   };
-  const links = marketplaceLinks(p);
+  const mkt = marketplaceOf(p.url);
 
   return (
     <div className={`prod-card${gift.claimed ? " reserved" : ""}`}>
@@ -478,34 +484,35 @@ function ProductCard({ gift, configured, onReserve }) {
         <div className="prod-name">{gift.name}</div>
 
         <div className="prod-buy">
-          <span className="prod-buy-label">Comprar em:</span>
-          <div className="prod-links">
-            {links.map((l) => (
-              <a
-                key={l.key}
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mkt mkt-${l.key}`}
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
+          <span className="prod-buy-label">Produto de</span>
+          <span className={`mkt-tag mkt-${mkt.key}`}>{mkt.label}</span>
         </div>
 
-        {gift.claimed ? (
-          <div className="prod-reserved">✅ Já reservado 💝</div>
-        ) : (
-          <button
-            className="btn btn-primary btn-block prod-pick"
-            onClick={onReserve}
-            disabled={!configured}
-            title={configured ? "" : "Reserva indisponível até configurar o banco"}
-          >
-            🎁 Vou dar esse!
-          </button>
-        )}
+        <div className="prod-actions">
+          {p.url ? (
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn prod-buy-btn"
+            >
+              🛒 Compre aqui
+            </a>
+          ) : null}
+
+          {gift.claimed ? (
+            <div className="prod-reserved">✅ Já reservado 💝</div>
+          ) : (
+            <button
+              className="btn btn-primary prod-pick"
+              onClick={onReserve}
+              disabled={!configured}
+              title={configured ? "" : "Reserva indisponível até configurar o banco"}
+            >
+              🎁 Vou dar esse!
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

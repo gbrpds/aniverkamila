@@ -483,6 +483,10 @@ h3 {
 
 .prod-buy {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 .prod-buy-label {
   font-size: 11px;
@@ -491,24 +495,14 @@ h3 {
   color: var(--purple);
   font-weight: 600;
 }
-.prod-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-}
-.mkt {
+/* Tag da loja (Produto de ...) */
+.mkt-tag {
   font-size: 12px;
-  font-weight: 600;
-  padding: 5px 9px;
-  border-radius: 8px;
-  text-decoration: none;
-  border: 1.5px solid transparent;
-  transition: filter 0.12s, transform 0.1s;
-  line-height: 1;
-}
-.mkt:active {
-  transform: translateY(1px);
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 .mkt-ml {
   background: #fff159;
@@ -526,22 +520,62 @@ h3 {
   background: #ee4d2d;
   color: #fff;
 }
-.mkt:hover {
-  filter: brightness(1.06);
+.mkt-loja {
+  background: var(--pink-pale);
+  color: var(--purple);
 }
 
+/* Botões de ação do card (Compre aqui + Vou dar esse) */
+.prod-actions {
+  display: flex;
+  gap: 8px;
+}
+.prod-actions .btn {
+  flex: 1;
+  font-size: 13.5px;
+  padding: 10px 8px;
+}
+.prod-buy-btn {
+  background: #fff;
+  color: var(--pink-hot);
+  border: 2px solid var(--pink);
+}
+.prod-buy-btn:hover {
+  background: var(--pink-pale-2);
+}
 .prod-pick {
-  font-size: 14px;
-  padding: 10px 14px;
+  font-size: 13.5px;
+  padding: 10px 8px;
 }
 .prod-reserved {
+  flex: 1;
   text-align: center;
   font-weight: 600;
   color: #147a37;
   background: #e5ffe9;
-  border-radius: 12px;
-  padding: 9px;
-  font-size: 14px;
+  border-radius: 40px;
+  padding: 10px 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Aviso de entrega */
+.delivery-note {
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--pink-pale-2);
+  border: 1.5px dashed var(--pink);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 auto 18px;
+  max-width: 460px;
+}
+.delivery-note strong {
+  color: var(--pink-hot);
 }
 
 .skeleton-card {

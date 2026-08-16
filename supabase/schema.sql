@@ -37,21 +37,42 @@ create table if not exists public.rsvps (
 alter table public.gifts enable row level security;
 alter table public.rsvps enable row level security;
 
--- Popula a lista de presentes (idempotente) -----------------
+-- Popula a lista de presentes -------------------------------
+-- Limpa a lista antiga antes de inserir a nova (rode sempre que a lista mudar).
+-- Como o rsvps.gift_id tem "on delete set null", nenhuma confirmação é perdida.
+delete from public.gifts;
+
 insert into public.gifts (name, position) values
-  ('Jogo de panelas antiaderente', 1),
-  ('Tábua de corte Bamboo Mor 50x30cm', 2),
-  ('Faqueiro Tramontina Búzios 24 peças', 3),
-  ('Kit 4 descansos de panela de bambu', 4),
-  ('Saca-rolhas Brinox', 5),
-  ('Liquidificador Mondial Easy Power 550W', 6),
-  ('Porta-temperos inox 12 potes', 7),
-  ('Espelho para banheiro', 8),
-  ('Porta-escova de dentes Dental Up', 9),
-  ('Porta-sabonete líquido de vidro 330ml', 10),
-  ('Abajur Home Line Charlot 51cm', 11),
-  ('Kit de almofadas decorativas', 12),
-  ('Jogo de cama Teka Crystal 4 peças 100% algodão', 13),
-  ('Tapete passadeira antiderrapante para cozinha 1,30m', 14),
-  ('Secador Mondial Travel Golden Rose', 15)
+  ('Jogo de Panelas', 1),
+  ('Tábua de Corte', 2),
+  ('Descanso de Panela', 3),
+  ('Saca Rolha', 4),
+  ('Liquidificador', 5),
+  ('Porta tempero', 6),
+  ('Kit banheiro', 7),
+  ('Abajur', 8),
+  ('Abajur verde', 9),
+  ('Almofadas', 10),
+  ('Jogo de lençol', 11),
+  ('Tapete de cozinha', 12),
+  ('Secador de cabelo', 13),
+  ('Leiteira', 14),
+  ('Edredom', 15),
+  ('Organizador Banheiro', 16),
+  ('Espelho Decorativo', 17),
+  ('Espelho Banheiro', 18),
+  ('Luminária', 19),
+  ('Tapete sala', 20),
+  ('Rack', 21),
+  ('Jogo de talheres', 22),
+  ('Estante', 23),
+  ('Tela grade', 24),
+  ('Mixer', 25),
+  ('Quadro decorativo', 26),
+  ('Kit 3 quadros', 27),
+  ('Quadro Stop Over Thinking', 28),
+  ('Toalhas', 29),
+  ('Jogo de facas', 30),
+  ('Potes', 31),
+  ('Puxa saco', 32)
 on conflict (name) do nothing;

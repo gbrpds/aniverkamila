@@ -5,31 +5,46 @@ Coloque aqui a foto de cada presente. Enquanto não houver foto, o card mostra u
 
 ## Como adicionar
 
-Salve cada foto com **exatamente** o nome abaixo (formato `.jpg`) e suba no git:
+Salve cada foto com **exatamente** o nome abaixo (formato `.jpg`) e suba no git.
+Foto **quadrada** fica melhor (o card corta em proporção 4:3).
 
-| Produto                                     | Nome do arquivo                    |
-| ------------------------------------------- | ---------------------------------- |
-| Jogo de panelas antiaderente                | `jogo-de-panelas-antiaderente.jpg` |
-| Tábua de corte Bamboo Mor 50x30cm           | `tabua-de-corte-bamboo.jpg`        |
-| Faqueiro Tramontina Búzios 24 peças         | `faqueiro-tramontina-buzios.jpg`   |
-| Kit 4 descansos de panela de bambu          | `descanso-panela-bambu.jpg`        |
-| Saca-rolhas Brinox                          | `saca-rolhas-brinox.jpg`           |
-| Liquidificador Mondial Easy Power 550W      | `liquidificador-mondial.jpg`       |
-| Porta-temperos inox 12 potes                | `porta-temperos-inox.jpg`          |
-| Espelho para banheiro                       | `espelho-banheiro.jpg`             |
-| Porta-escova de dentes Dental Up            | `porta-escova-dental-up.jpg`       |
-| Porta-sabonete líquido de vidro 330ml       | `porta-sabonete-vidro.jpg`         |
-| Abajur Home Line Charlot 51cm               | `abajur-charlot.jpg`               |
-| Kit de almofadas decorativas                | `kit-almofadas.jpg`                |
-| Jogo de cama Teka Crystal 4 peças 100% alg. | `jogo-cama-teka-crystal.jpg`       |
-| Tapete passadeira antiderrapante p/ cozinha | `tapete-passadeira-cozinha.jpg`    |
-| Secador Mondial Travel Golden Rose          | `secador-mondial-travel.jpg`       |
+| Produto                    | Nome do arquivo                   |
+| -------------------------- | --------------------------------- |
+| Jogo de Panelas            | `jogo-de-panelas.jpg`             |
+| Tábua de Corte             | `tabua-de-corte.jpg`              |
+| Descanso de Panela         | `descanso-de-panela.jpg`          |
+| Saca Rolha                 | `saca-rolha.jpg`                  |
+| Liquidificador             | `liquidificador.jpg`              |
+| Porta tempero              | `porta-tempero.jpg`               |
+| Kit banheiro               | `kit-banheiro.jpg`                |
+| Abajur                     | `abajur.jpg`                      |
+| Abajur verde               | `abajur-verde.jpg`                |
+| Almofadas                  | `almofadas.jpg`                   |
+| Jogo de lençol             | `jogo-de-lencol.jpg`              |
+| Tapete de cozinha          | `tapete-de-cozinha.jpg`           |
+| Secador de cabelo          | `secador-de-cabelo.jpg`           |
+| Leiteira                   | `leiteira.jpg`                    |
+| Edredom                    | `edredom.jpg`                     |
+| Organizador Banheiro       | `organizador-banheiro.jpg`        |
+| Espelho Decorativo         | `espelho-decorativo.jpg`          |
+| Espelho Banheiro           | `espelho-banheiro.jpg`            |
+| Luminária                  | `luminaria.jpg`                   |
+| Tapete sala                | `tapete-sala.jpg`                 |
+| Rack                       | `rack.jpg`                        |
+| Jogo de talheres           | `jogo-de-talheres.jpg`            |
+| Estante                    | `estante.jpg`                     |
+| Tela grade                 | `tela-grade.jpg`                  |
+| Mixer                      | `mixer.jpg`                       |
+| Quadro decorativo          | `quadro-decorativo.jpg`           |
+| Kit 3 quadros              | `kit-3-quadros.jpg`               |
+| Quadro Stop Over Thinking  | `quadro-stop-overthinking.jpg`    |
+| Toalhas                    | `toalhas.jpg`                     |
+| Jogo de facas              | `jogo-de-facas.jpg`               |
+| Potes                      | `potes.jpg`                       |
+| Puxa saco                  | `puxa-saco.jpg`                   |
 
-## Dicas
+## Dica pra pegar a foto rápido
 
-- Foto **quadrada** fica melhor (o card corta em quadrado). Ex: 600×600px.
-- Pode usar `.jpg` ou `.png`. Se usar `.png`, troque a extensão em
-  `lib/products.js` (campo `image`) ou me avise que eu ajusto.
-- Onde conseguir a foto: abra um dos botões de marketplace do card (Mercado
-  Livre, Amazon...), salve a imagem do produto que você gostou e renomeie.
-- O nome do arquivo (o "slug") está definido em `lib/products.js`.
+Abra o botão **"Compre aqui"** do produto, salve a imagem que aparece na loja
+(Mercado Livre / Shopee) e renomeie com o nome da tabela acima. Os slugs também
+estão em `lib/products.js`.
