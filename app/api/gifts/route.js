@@ -3,6 +3,17 @@ import { getSupabaseAdmin } from "../../../lib/supabase";
 import { GIFT_NAMES } from "../../../lib/products";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+// Extrai a "ref" do projeto (subdomínio da URL do Supabase) só para diagnóstico.
+function projectRef() {
+  try {
+    const host = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).host;
+    return host.split(".")[0];
+  } catch {
+    return null;
+  }
+}
 
 // GET /api/gifts -> lista de presentes com status de reservado
 export async function GET() {
@@ -27,10 +38,18 @@ export async function GET() {
 
   if (error) {
     return NextResponse.json(
-      { configured: true, error: error.message, gifts: [] },
+      { configured: true, project: projectRef(), error: error.message, gifts: [] },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ configured: true, gifts: data ?? [] });
+  return NextResponse.json(
+    {
+      configured: true,
+      project: projectRef(),
+      count: data ? data.length : 0,
+      gifts: data ?? [],
+    },
+    { headers: { "Cache-Control": "no-store, max-age=0" } }
+  );
 }
